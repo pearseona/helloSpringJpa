@@ -134,5 +134,9 @@
 
     </form>
 
+    <footer>
+        <p th:text="'실습 수행 일시 : ' + ${#temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a HH:mm:ss') + ' | 학번 : 2271192 | 성명 : 배선아'}"></p>
+    </footer>
+
 </body>
 </html>
