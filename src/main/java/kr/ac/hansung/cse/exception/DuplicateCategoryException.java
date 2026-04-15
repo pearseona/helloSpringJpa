@@ -1,4 +1,7 @@
 package kr.ac.hansung.cse.exception;
 
-public class DuplicateCategoryException {
+public class DuplicateCategoryException extends RuntimeException {
+    public DuplicateCategoryException(String name) {
+        super("이미 존재하는 카테고리 입니다: " + name);
+    }
 }

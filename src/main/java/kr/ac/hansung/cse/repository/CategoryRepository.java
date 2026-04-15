@@ -28,7 +28,7 @@ public class CategoryRepository {
                 .getResultList();
     }
 
-    // 이름으로 카테고리 조회 (폼에서 선택한 카테고리명 → Category 엔티티 변환 시 사용)
+    // 이름 중복 검사용 (Optional 반환 -> 없으면 empty)
     public Optional<Category> findByName(String name) {
         List<Category> result = em.createQuery(
                         "SELECT c FROM Category c WHERE c.name = :name", Category.class)
@@ -45,6 +45,22 @@ public class CategoryRepository {
                 .setParameter("id", id)
                 .getResultList();
         return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+    }
+
+    // 삭제 전 연결 상품 수 확인 (COUNT 쿼리)
+    public long countProductByCategoryId(Long categoryId) {
+        return em.createQuery(
+            "SELECT COUNT(p) FROM Product p WHERE p.category.id = :id",
+            Long.class)
+            .setParameter("id", categoryId).getSingleResult();
+    }
+
+    // 카테고리 삭제
+    public void delete(Long id) {
+        Category c = em.find(Category.class, id);
+        if (c != null) {
+            em.remove(c);
+        }
     }
 }
 
